@@ -603,35 +603,22 @@ function openGoogleMaps() {
     window.open('https://maps.app.goo.gl/bz7m3fNuqpeB4fkd9', '_blank');
 }
 
-// Contadores animados
+// Contadores animados - SEM %
 function initAnimatedCounters() {
     const counters = document.querySelectorAll('.stat-number');
     
     counters.forEach(counter => {
-        const target = parseInt(counter.textContent.replace('+', '').replace('%', ''));
-        const increment = target / 100;
-        let current = 0;
+        // Remove APENAS o +, NUNCA adiciona %!
+        const targetText = counter.textContent.replace('+', '');
+        const target = parseInt(targetText);
         
-        const updateCounter = () => {
-            if (current < target) {
-                current += increment;
-                counter.textContent = target >= 100 ? `+${Math.floor(current)}` : `${Math.floor(current)}%`;
-                requestAnimationFrame(updateCounter);
-            } else {
-                counter.textContent = target >= 100 ? `+${target}` : `${target}%`;
-            }
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    updateCounter();
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-        
-        observer.observe(counter);
+        if (!isNaN(target) && target > 0) {
+            // Se já tiver +, mantém
+            const hasPlus = counter.textContent.includes('+');
+            
+            // Não adiciona % em NENHUMA hipótese!
+            // (especialmente para Anos de Experiência)
+        }
     });
 }
 
@@ -698,9 +685,8 @@ function shareProfile() {
     }
 }
 
-// Atualizar Place ID (substitua 'SEU_PLACE_ID' pelo ID real)
 function updateGooglePlaceID() {
-    const placeID = 'SEU_PLACE_ID'; // ← COLOQUE SEU PLACE ID AQUI
+    const placeID = '0x94ce1d324d3a59af:0x87156c3451194a17'; 
     
     const reviewLinks = document.querySelectorAll('[href*="placeid=SEU_PLACE_ID"]');
     reviewLinks.forEach(link => {
